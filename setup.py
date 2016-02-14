@@ -27,6 +27,8 @@ class PostInstall(install):
         else:
             print "Init.d script already exists"
 
+        print "Installation completed"
+
 
 setup(name='pi-sensor-service',
       version='1.0',
