@@ -1,0 +1,8 @@
+smtp_address = '192.168.1.113'
+smtp_port = 25
+
+from_address = 'pi-sensors-notify@barser.com'
+destination_address = 'bartee.88@gmail.com'
+
+temp_notification_threshold = 40
+humidity_notification_threshold = 50
