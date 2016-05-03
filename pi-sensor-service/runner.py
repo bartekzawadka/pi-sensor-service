@@ -4,6 +4,7 @@ from threading import Thread
 import Adafruit_DHT
 from notifier import Notifier
 import time
+import RPi.GPIO as GPIO
 
 notifier = Notifier()
 
@@ -16,10 +17,28 @@ class SensorsRunner(Thread):
         self.__lastResults = {}
         self.__last_t_max = None
         self.__last_h_max = None
+        self.__fan_control_pin = 12
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setwarnings(False)
+        GPIO.setup(self.__fan_control_pin, GPIO.OUT)
+        self.__pwm = GPIO.PWM(self.__fan_control_pin, 50)
+        self.__pwm.start(50)
+        self.__last_pwm = 50
         Thread.__init__(self)
 
     def get_last_results(self):
         return self.__lastResults
+
+
+    def get_last_pwm(self):
+        return self.__last_pwm;
+
+
+    def set_fans_speed(self, pwm):
+        if pwm < 50 or pwm > 100:
+            return
+        self.__last_pwm = pwm
+        self.__pwm.ChangeDutyCycle(pwm)
 
     def run(self):
         while True:
